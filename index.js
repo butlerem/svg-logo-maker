@@ -1,3 +1,4 @@
+require = require('esm')(module /*, options*/);
 const getUserInput = require('./lib/userInput');
 const { Circle, Square, Triangle } = require('./lib/shapes');
 
