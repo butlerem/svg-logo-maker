@@ -1,50 +1,44 @@
-require = require('esm')(module /*, options*/);
-const getUserInput = require('./lib/userInput');
+const fs = require('fs');
+const { prompt } = require('./lib/userInput');
 const { Circle, Square, Triangle } = require('./lib/shapes');
 
-
 async function run() {
-    try {
-      // Gather user input using the getUserInput function
-      const userInput = await getUserInput();
-  
-      // Generate the SVG code based on user input
-      let shape;
-switch (userInput.shape) {
-  case 'Circle':
-    shape = new Circle();
-    break;
-  case 'Square':
-    shape = new Square();
-    break;
-  case 'Triangle':
-    shape = new Triangle();
-    break;
-  default:
-    throw new Error('Invalid shape selected');
-}
+  const shapeType = await prompt('Enter the shape type (circle, square, triangle): ');
 
-// Set the color of the shape based on user input
-shape.setColor(userInput.shapeColor);
-
-// Generate the SVG code for the shape
-const svgCode = shape.render();
-
-      // Use the selected shape class (Circle, Square, Triangle) to generate the SVG code
-  
-      const fs = require('fs');
-
-      // Write the SVG code to a file named logo.svg
-      fs.writeFileSync('logo.svg', svgCode);
-      
-  
-      console.log('SVG logo generated successfully!');
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
+  let shape;
+  switch (shapeType.toLowerCase()) {
+    case 'circle':
+      shape = new Circle();
+      break;
+    case 'square':
+      shape = new Square();
+      break;
+    case 'triangle':
+      shape = new Triangle();
+      break;
+    default:
+      console.log('Invalid shape type!');
+      return;
   }
 
-  run();
+  const color = await prompt('Enter the color: ');
+  shape.setColor(color);
 
-  
+  const dimensions = await prompt('Enter the dimensions: ');
+  shape.setDimensions(dimensions);
+
+  const svgContent = shape.render();
+  const svgData = `<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+
+  fs.writeFile('logo.svg', svgData, (err) => {
+    if (err) {
+      console.error('Error creating logo.svg:', err);
+    } else {
+      console.log('Generated logo.svg');
+    }
+  });
+}
+
+run();
+
   
