@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { prompt } = require('./lib/userInput');
-const { Circle, Square, Triangle } = require('./lib/shapes');
+const { Triangle, Circle, Square } = require('./lib/shapes');
 
 async function run() {
   const shapeType = await prompt('Enter the shape type (circle, square, triangle): ');
@@ -21,14 +21,17 @@ async function run() {
       return;
   }
 
-  const color = await prompt('Enter the color: ');
-  shape.setColor(color);
+  const shapeColor = await prompt('Enter the color of the shape: ');
+  shape.setColor(shapeColor);
 
-  const dimensions = await prompt('Enter the dimensions: ');
-  shape.setDimensions(dimensions);
+  const text = await prompt('Enter up to 3 letters of text inside the shape: ');
+
+  const textColor = await prompt('Enter the color of the text: ');
+
+  shape.setText(text, textColor);
 
   const svgContent = shape.render();
-  const svgData = `<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+  const svgData = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 200 200">${svgContent}</svg>`;
 
   fs.writeFile('logo.svg', svgData, (err) => {
     if (err) {
@@ -40,5 +43,6 @@ async function run() {
 }
 
 run();
+
 
   
