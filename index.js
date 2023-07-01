@@ -37,7 +37,7 @@ async function run() {
     if (err) {
       console.error('Error creating logo.svg:', err);
     } else {
-      console.log('Generated logo.svg');
+      console.log('Generated logo.svg !');
     }
   });
 }
